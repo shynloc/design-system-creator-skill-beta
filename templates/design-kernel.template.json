@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "system_version": "0.1.0",
+    "name": "",
+    "created_at": "",
+    "updated_at": ""
+  },
+  "philosophy": [],
+  "principles": [],
+  "anti_style": [],
+  "tokens": {
+    "foundation": {},
+    "semantic": {},
+    "typography": {}
+  },
+  "profiles": {
+    "core": {
+      "overrides": {}
+    }
+  },
+  "medium_rules": {},
+  "provenance": {
+    "facts": {},
+    "pending": [],
+    "maturity": {}
+  }
+}

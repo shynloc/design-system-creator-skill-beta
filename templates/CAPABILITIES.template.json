@@ -1,0 +1,13 @@
+{
+  "vision": "UNVERIFIED",
+  "attachments": "UNVERIFIED",
+  "multi_image": "UNVERIFIED",
+  "filesystem_read": "UNVERIFIED",
+  "archive_extract": "UNVERIFIED",
+  "browser_render": "UNVERIFIED",
+  "screenshot": "UNVERIFIED",
+  "docx": "UNVERIFIED",
+  "pptx": "UNVERIFIED",
+  "xlsx": "UNVERIFIED",
+  "pdf": "UNVERIFIED"
+}
