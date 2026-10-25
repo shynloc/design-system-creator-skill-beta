@@ -1,0 +1,21 @@
+{
+  "title": "A Better Way to Explain Complex Systems",
+  "subtitle": "Synthetic Design Studio test brief",
+  "sections": [
+    {
+      "title": "Problem",
+      "body": "Complex information becomes difficult when hierarchy and evidence are mixed."
+    },
+    {
+      "title": "Approach",
+      "body": "Separate identity, creative direction and medium-specific rendering."
+    },
+    {
+      "title": "Result",
+      "body": "One visual language can support several artifact types without becoming one template."
+    }
+  ],
+  "accent": "#E86A2C",
+  "paper": "#F3EFE7",
+  "ink": "#191919"
+}

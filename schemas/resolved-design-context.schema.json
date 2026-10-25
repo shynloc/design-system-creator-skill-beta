@@ -1,0 +1,14 @@
+{
+  "title": "Resolved Design Context",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task",
+    "medium",
+    "resolved_tokens",
+    "creative_direction",
+    "anti_style",
+    "qa"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

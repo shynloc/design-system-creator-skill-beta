@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0",
+  "state": "COLLECTING",
+  "references": [
+    {"id":"R01","kind":"image","weight":"core","positive_dimensions":["typography","spacing"],"negative_dimensions":[],"vision_status":"VERIFIED"},
+    {"id":"R02","kind":"image","weight":"partial","positive_dimensions":["color"],"negative_dimensions":["layout"],"vision_status":"VERIFIED"}
+  ]
+}

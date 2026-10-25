@@ -1,0 +1,38 @@
+{
+  "audience": "professionals",
+  "goal": "explain a complex system clearly",
+  "content_type": "technical report",
+  "narrative": [
+    "problem",
+    "structure",
+    "evidence",
+    "decision"
+  ],
+  "visual_metaphor": "editorial technical notebook",
+  "visual_signatures": [
+    "editorial headline hierarchy",
+    "thin rule-based structure",
+    "one semantic accent"
+  ],
+  "layout_strategy": {
+    "desktop": "asymmetric editorial grid",
+    "mobile": "single-column reflow"
+  },
+  "typography_behavior": {
+    "headline": "large and restrained",
+    "body": "compact but readable"
+  },
+  "asset_strategy": {
+    "primary": "diagrams and real evidence",
+    "avoid": "decorative 3D"
+  },
+  "density": "medium-high",
+  "motion": "minimal",
+  "temporary_art_direction": {
+    "temperature": "slightly cooler than core"
+  },
+  "avoid": [
+    "glassmorphism",
+    "fake HUD data"
+  ]
+}

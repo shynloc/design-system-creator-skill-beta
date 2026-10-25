@@ -1,0 +1,5 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","required":["assets"],
+  "properties":{"assets":{"type":"array","items":{"type":"object","required":["asset_id","purpose","origin","fallback","alt_text"],"properties":{"asset_id":{"type":"string"},"purpose":{"type":"string"},"origin":{"type":"string"},"source_or_license":{"type":"string"},"fallback":{"type":"string"},"alt_text":{"type":"string"},"editable":{"type":"boolean"}}}}}
+}

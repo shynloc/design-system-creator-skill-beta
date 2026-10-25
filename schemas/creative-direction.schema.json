@@ -1,0 +1,15 @@
+{
+  "title": "Creative Direction",
+  "type": "object",
+  "required": [
+    "audience",
+    "goal",
+    "narrative",
+    "visual_metaphor",
+    "visual_signatures",
+    "layout_strategy",
+    "asset_strategy",
+    "avoid"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

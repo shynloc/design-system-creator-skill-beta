@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "system_version": "1.0.0",
+    "name": "Sample Personal System",
+    "created_at": "2026-10-25",
+    "updated_at": "2026-10-25"
+  },
+  "philosophy": [
+    "Precise without becoming sterile",
+    "Warmth without decorative excess",
+    "Information hierarchy before effects"
+  ],
+  "principles": [
+    {
+      "id": "P-01",
+      "value": "Clear hierarchy",
+      "status": "CONFIRMED",
+      "confidence": 1.0,
+      "evidence": [
+        "decision:D-001"
+      ]
+    }
+  ],
+  "anti_style": [
+    {
+      "id": "A-01",
+      "value": "generic purple-blue SaaS gradient",
+      "status": "CONFIRMED",
+      "evidence": [
+        "decision:D-002"
+      ]
+    },
+    {
+      "id": "A-02",
+      "value": "repetitive oversized rounded cards",
+      "status": "CONFIRMED",
+      "evidence": [
+        "decision:D-003"
+      ]
+    }
+  ],
+  "tokens": {
+    "foundation": {
+      "color": {
+        "ink": "#191919",
+        "paper": "#F3EFE7",
+        "accent": "#E86A2C"
+      },
+      "space": {
+        "1": 4,
+        "2": 8,
+        "3": 12
+      }
+    },
+    "semantic": {
+      "background": "{color.paper}",
+      "text": "{color.ink}",
+      "accent": "{color.accent}"
+    },
+    "typography": {
+      "heading": "serif/editorial",
+      "body": "sans-serif"
+    }
+  },
+  "profiles": {
+    "core": {
+      "overrides": {}
+    },
+    "editorial": {
+      "overrides": {
+        "density": "medium",
+        "heading_scale": "large"
+      }
+    }
+  },
+  "medium_rules": {
+    "web": {
+      "radius": "low"
+    },
+    "docx": {
+      "color_blocks": "minimal"
+    },
+    "pptx": {
+      "one_primary_task_per_slide": true
+    },
+    "xlsx": {
+      "color_is_semantic": true
+    }
+  },
+  "provenance": {
+    "facts": {},
+    "pending": [],
+    "maturity": {
+      "color": 0.9,
+      "typography": 0.8,
+      "layout": 0.9,
+      "charts": 0.6
+    }
+  }
+}

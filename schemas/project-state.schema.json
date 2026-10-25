@@ -1,0 +1,10 @@
+{
+  "title": "Design System Creator State",
+  "type": "object",
+  "required": [
+    "version",
+    "phase",
+    "capabilities"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

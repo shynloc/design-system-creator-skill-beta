@@ -1,0 +1,5 @@
+{
+  "assets": [
+    {"asset_id":"A01","purpose":"Explain the main relationship","origin":"original-svg","source_or_license":"original","fallback":"text + simple diagram","alt_text":"Relationship diagram","editable":true}
+  ]
+}

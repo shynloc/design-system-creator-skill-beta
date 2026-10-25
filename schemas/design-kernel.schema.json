@@ -1,0 +1,15 @@
+{
+  "title": "Design Kernel",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "metadata",
+    "philosophy",
+    "principles",
+    "anti_style",
+    "tokens",
+    "profiles",
+    "provenance"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
