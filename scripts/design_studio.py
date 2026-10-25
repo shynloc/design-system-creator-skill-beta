@@ -38,62 +38,76 @@ def probe_host():
         'archive_zip':{'status':'VERIFIED'},
         'browser_screenshot':{'status':'AVAILABLE_UNVERIFIED' if browser else 'UNSUPPORTED','path':browser},
       },
-      'model':{'vision':'UNKNOWN','note':'A local script cannot prove the active model can see image pixels. The Agent must verify runtime/model input modalities.'},
-      'interaction':{'attachments':'UNKNOWN','multi_attachment':'UNKNOWN','mobile':'UNKNOWN'},
-      'artifacts':{'web':'AVAILABLE','docx':'HOST_NATIVE_OR_UNVERIFIED','pptx':'HOST_NATIVE_OR_UNVERIFIED','xlsx':'HOST_NATIVE_OR_UNVERIFIED','pdf':'HOST_NATIVE_OR_UNVERIFIED','charts':'HOST_NATIVE_OR_UNVERIFIED'}
+      'model':{
+        'vision':{'status':'UNVERIFIED','note':'A local script cannot prove the active chat model receives image pixels.'},
+        'multi_image':{'status':'UNVERIFIED'},
+      },
+      'policy':'Model vision must be verified by the host/model interface before image-content analysis.'
     }
 
 def cmd_probe_host(a):
-    o=probe_host();
-    if a.out: dump(a.out,o)
-    print(json.dumps(o,ensure_ascii=False,indent=2))
-
-def init_tree(p):
-    p=Path(p); dirs=['.design-studio','sources','references','kernel/history','directions','resolved','artifacts','qa','exports','decisions']
-    for d in dirs:(p/d).mkdir(parents=True,exist_ok=True)
-    dump(p/'project.json',{'schema_version':'1.0.0','creator_version':VERSION,'phase':'ROUTE','status':'ACTIVE'})
-    dump(p/'.design-studio/state.json',{'phase':'ROUTE','reference_intake':'IDLE','kernel_status':'MISSING','copy_approval':'NOT_APPLICABLE','updated_by':VERSION})
-    dump(p/'references/reference-registry.json',{'schema_version':'1.0.0','state':'IDLE','sealed':False,'analysis_authorized':False,'references':[]})
-    (p/'decisions/DECISIONS.md').write_text((ROOT/'templates/DECISIONS.template.md').read_text(encoding='utf-8'),encoding='utf-8')
+    r=probe_host()
+    if a.out: dump(a.out,r)
+    print(json.dumps(r,ensure_ascii=False))
 
 def cmd_init(a):
-    p=Path(a.project); p.mkdir(parents=True,exist_ok=True); init_tree(p); print(json.dumps({'status':'PASS','project':str(p)},ensure_ascii=False))
+    p=Path(a.project).resolve()
+    for d in ['kernel','context','creative','references','sources','outputs','qa','decisions','exports','.design-studio']:
+        (p/d).mkdir(parents=True,exist_ok=True)
+    cap=probe_host()
+    dump(p/'.design-studio/capabilities.json',cap)
+    dump(p/'.design-studio/state.json',{
+      'version':VERSION,'phase':'CAPABILITY','reference_intake':'IDLE','kernel_status':'DRAFT',
+      'capabilities':'.design-studio/capabilities.json','next_action':'Verify model vision if visual references are needed; otherwise route task.'
+    })
+    if not (p/'kernel/design-kernel.json').exists(): shutil.copy2(ROOT/'templates/design-kernel.template.json',p/'kernel/design-kernel.json')
+    if not (p/'decisions/DECISIONS.md').exists(): shutil.copy2(ROOT/'templates/DECISIONS.template.md',p/'decisions/DECISIONS.md')
+    print(json.dumps({'status':'PASS','project':str(p)},ensure_ascii=False))
 
 def cmd_status(a):
-    p=Path(a.project); out={'project':load(p/'project.json'),'state':load(p/'.design-studio/state.json'),'reference_registry':load(p/'references/reference-registry.json')}
-    print(json.dumps(out,ensure_ascii=False,indent=2))
+    s=Path(a.project)/'.design-studio/state.json'
+    if not s.exists(): print(json.dumps({'status':'FAIL','error':'project not initialized'})); return 1
+    print(s.read_text(encoding='utf-8'))
 
 def validate_kernel_obj(o):
     r=required(o,REQ_KERNEL,'design-kernel'); warnings=[]; blockers=[]
-    if 'metadata' in o and not o['metadata'].get('system_version'): warnings.append('metadata.system_version missing')
-    for x in o.get('provenance',{}).get('facts',[]):
-        if x.get('status') not in ['OBSERVED','INFERRED','CONFIRMED']: blockers.append('invalid fact status: '+str(x.get('id')))
-        if x.get('status')=='CONFIRMED' and not x.get('evidence'): warnings.append('confirmed fact without evidence: '+str(x.get('id')))
-    r.update({'warnings':warnings,'blockers':blockers});
-    if blockers:r['status']='FAIL'
+    if not o.get('philosophy'): warnings.append('philosophy is empty')
+    if not o.get('principles'): warnings.append('principles are empty')
+    if not o.get('anti_style'): warnings.append('anti_style is empty')
+    pending=o.get('provenance',{}).get('pending',[])
+    if pending: warnings.append(f'{len(pending)} provenance items pending review')
+    facts=o.get('provenance',{}).get('facts',[])
+    facts=facts.values() if isinstance(facts,dict) else facts
+    for x in facts:
+        if isinstance(x,dict) and x.get('status')=='CONFIRMED' and not x.get('evidence'):
+            warnings.append(f"confirmed fact lacks evidence: {x.get('id','unknown')}")
+    r['warnings']=warnings; r['blockers']=blockers
     return r
 
 def cmd_validate_kernel(a):
-    r=validate_kernel_obj(load(a.file));print(json.dumps(r,ensure_ascii=False));return 0 if r['status']=='PASS' else 1
+    r=validate_kernel_obj(load(a.file)); print(json.dumps(r,ensure_ascii=False)); return 0 if r['status']=='PASS' else 1
 
 def cmd_validate_context(a):
-    o=load(a.file);r=required(o,REQ_CONTEXT,'resolved-context');print(json.dumps(r,ensure_ascii=False));return 0 if r['status']=='PASS' else 1
+    o=load(a.file); r=required(o,REQ_CONTEXT,'resolved-design-context')
+    if 'kernel_hash' not in o: r.setdefault('warnings',[]).append('kernel_hash missing')
+    print(json.dumps(r,ensure_ascii=False)); return 0 if r['status']=='PASS' else 1
 
-def merge(base,over,conflicts,prefix=''):
-    if not isinstance(base,dict) or not isinstance(over,dict): return over
-    out=dict(base)
-    for k,v in over.items():
-        path=f'{prefix}.{k}' if prefix else k
-        if k in out and isinstance(out[k],dict) and isinstance(v,dict): out[k]=merge(out[k],v,conflicts,path)
-        else:
-            if k in out and out[k]!=v: conflicts.append({'path':path,'from':out[k],'to':v})
-            out[k]=v
-    return out
+def merge(a,b,conflicts,path=''):
+    if isinstance(a,dict) and isinstance(b,dict):
+        out=dict(a)
+        for k,v in b.items():
+            q=f'{path}.{k}' if path else k
+            out[k]=merge(out[k],v,conflicts,q) if k in out else v
+        return out
+    if a!=b and a not in (None,'',[],{}): conflicts.append({'path':path,'from':a,'to':b})
+    return b
 
 def cmd_resolve(a):
-    k=load(a.kernel);d=load(a.direction);conflicts=[]; profile={}
+    k=load(a.kernel); kr=validate_kernel_obj(k)
+    if kr['status']!='PASS': print(json.dumps(kr,ensure_ascii=False)); return 1
+    d=load(a.direction); conflicts=[]; profile={}
     if a.profile:
-        if a.profile not in k.get('profiles',{}): print(json.dumps({'status':'FAIL','error':'unknown profile'})); return 1
+        if a.profile not in k.get('profiles',{}): print(json.dumps({'status':'FAIL','error':'profile not found'},ensure_ascii=False)); return 1
         profile=k['profiles'][a.profile].get('overrides',{})
     temp=load(a.temporary) if a.temporary else {}
     tokens=merge(k.get('tokens',{}),profile,conflicts,'tokens')
