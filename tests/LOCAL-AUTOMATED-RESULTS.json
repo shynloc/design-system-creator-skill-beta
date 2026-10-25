@@ -3,18 +3,70 @@
   "passed": 13,
   "failed": 0,
   "results": [
-    {"name":"no-excluded-project-style","status":"PASS","detail":"none found"},
-    {"name":"python-compile","status":"PASS","detail":"all scripts compile"},
-    {"name":"self-test","status":"PASS","detail":"{\"status\": \"PASS\", \"version\": \"1.0.0-beta.1\", \"checks\": {\"context\": true, \"runtime\": true, \"temporary_does_not_mutate_kernel\": true, \"portable_excludes_references\": true}}"},
-    {"name":"sample-kernel-validation","status":"PASS","detail":"{\"status\": \"PASS\", \"label\": \"design-kernel\", \"missing\": [], \"warnings\": [], \"blockers\": []}"},
-    {"name":"visual-pitch","status":"PASS","detail":"3 distinct HTML candidates + manifest"},
-    {"name":"runtime-compiler","status":"PASS","detail":"runtime package OK (13 files)"},
-    {"name":"portable-privacy","status":"PASS","detail":"raw refs/sources excluded"},
-    {"name":"temporary-immutability","status":"PASS","detail":"kernel hash unchanged"},
-    {"name":"reference-intake-protocol","status":"PASS","detail":"explicit seal + commit present"},
-    {"name":"vision-guard","status":"PASS","detail":"vision anti-hallucination guard present"},
-    {"name":"visual-qa-blocked","status":"PASS","detail":"missing browser is reported BLOCKED, not PASS"},
-    {"name":"two-level-flatten","status":"PASS","detail":"max file depth=2"},
-    {"name":"asset-plan","status":"PASS","detail":"{\"status\": \"PASS\", \"errors\": []}"}
+    {
+      "name": "no-excluded-project-style",
+      "status": "PASS",
+      "detail": "none found"
+    },
+    {
+      "name": "python-compile",
+      "status": "PASS",
+      "detail": "all scripts compile"
+    },
+    {
+      "name": "self-test",
+      "status": "PASS",
+      "detail": "{\"status\": \"PASS\", \"version\": \"1.0.0-beta.1\", \"checks\": {\"context\": true, \"runtime\": true, \"temporary_does_not_mutate_kernel\": true, \"portable_excludes_references\": true}}"
+    },
+    {
+      "name": "sample-kernel-validation",
+      "status": "PASS",
+      "detail": "{\"status\": \"PASS\", \"label\": \"design-kernel\", \"missing\": [], \"warnings\": [], \"blockers\": []}"
+    },
+    {
+      "name": "visual-pitch",
+      "status": "PASS",
+      "detail": "3 distinct HTML candidates + manifest"
+    },
+    {
+      "name": "runtime-compiler",
+      "status": "PASS",
+      "detail": "runtime package OK (13 files)"
+    },
+    {
+      "name": "portable-privacy",
+      "status": "PASS",
+      "detail": "raw refs/sources excluded"
+    },
+    {
+      "name": "temporary-immutability",
+      "status": "PASS",
+      "detail": "kernel hash unchanged"
+    },
+    {
+      "name": "reference-intake-protocol",
+      "status": "PASS",
+      "detail": "explicit seal + commit present"
+    },
+    {
+      "name": "vision-guard",
+      "status": "PASS",
+      "detail": "vision anti-hallucination guard present"
+    },
+    {
+      "name": "visual-qa-blocked",
+      "status": "PASS",
+      "detail": "missing browser is reported BLOCKED, not PASS"
+    },
+    {
+      "name": "two-level-flatten",
+      "status": "PASS",
+      "detail": "max file depth=2"
+    },
+    {
+      "name": "asset-plan",
+      "status": "PASS",
+      "detail": "{\"status\": \"PASS\", \"errors\": []}"
+    }
   ]
 }
