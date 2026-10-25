@@ -1,0 +1,20 @@
+{
+  "name": "design-system-creator",
+  "display_name": "Design System Creator",
+  "version": "1.0.0-beta.1",
+  "entry": "SKILL.md",
+  "install_scope": "entire_repository",
+  "required_paths": [
+    "SKILL.md",
+    "START-HERE.md",
+    "references",
+    "schemas",
+    "templates",
+    "scripts"
+  ],
+  "self_test": [
+    "python scripts/design_studio.py self-test",
+    "python tests/run_tests.py"
+  ],
+  "notes": "Do not install only SKILL.md. Vision analysis is capability-gated."
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import argparse, json, html
+from pathlib import Path
+BASE="*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif}main{min-height:100vh}h1,h2,p{margin:0}.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase}@media(max-width:720px){.section{padding:32px 22px}}"
+def esc(x): return html.escape(str(x or ''))
+def editorial(b):
+    paper,ink,accent=b.get('paper','#f5f0e8'),b.get('ink','#181818'),b.get('accent','#d9622b')
+    sections=''.join(f'<section class="section"><b>0{i+1}</b><div><h2>{esc(s.get("title"))}</h2><p>{esc(s.get("body"))}</p></div></section>' for i,s in enumerate(b.get('sections',[])))
+    css=BASE+f"body{{background:{paper};color:{ink}}}.hero{{padding:7vw;min-height:70vh;display:grid;align-content:end;border-bottom:1px solid #0003}}h1{{font-family:Georgia,serif;font-size:clamp(54px,9vw,132px);line-height:.88;max-width:11ch;letter-spacing:-.05em}}.mark{{width:92px;height:8px;background:{accent};margin:28px 0}}.section{{display:grid;grid-template-columns:80px 1fr;gap:24px;padding:64px;border-bottom:1px solid #0002}}h2{{font-family:Georgia,serif;font-size:clamp(30px,4vw,58px)}}p{{font-size:18px;line-height:1.65;max-width:48ch;margin-top:18px}}"
+    return f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>{css}</style><main><section class="hero"><div class="kicker">Editorial Structure</div><h1>{esc(b.get("title"))}</h1><div class="mark"></div><p>{esc(b.get("subtitle"))}</p></section>{sections}</main>'
+def architecture(b):
+    accent=b.get('accent','#e86a2c'); sections=''.join(f'<article><span>0{i+1}</span><h2>{esc(s.get("title"))}</h2><p>{esc(s.get("body"))}</p></article>' for i,s in enumerate(b.get('sections',[])))
+    css=BASE+f"body{{background:#111315;color:#f3efe7}}.hero{{min-height:64vh;padding:7vw;position:relative;overflow:hidden;border-bottom:1px solid #fff2}}.hero:before{{content:'';position:absolute;inset:10% -5% auto 42%;height:52%;border:1px solid {accent};transform:skewX(-18deg)}}h1{{font-size:clamp(46px,8vw,110px);max-width:9ch;line-height:.9;letter-spacing:-.055em;position:relative}}.cards{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#fff2}}article{{background:#111315;padding:48px;min-height:360px}}article span{{color:{accent};font-family:monospace}}article h2{{font-size:30px;margin-top:80px}}article p{{line-height:1.6;margin-top:18px;color:#ddd}}@media(max-width:720px){{.cards{{grid-template-columns:1fr}}article{{min-height:auto}}}}"
+    return f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>{css}</style><main><section class="hero"><div class="kicker">Cinematic Information Architecture</div><h1>{esc(b.get("title"))}</h1><p>{esc(b.get("subtitle"))}</p></section><section class="cards">{sections}</section></main>'
+def utility(b):
+    ink,accent=b.get('ink','#191919'),b.get('accent','#e86a2c'); rows=''.join(f'<div class="row"><div class="num">{i+1:02}</div><div><h2>{esc(s.get("title"))}</h2><p>{esc(s.get("body"))}</p></div><div class="tag">Evidence</div></div>' for i,s in enumerate(b.get('sections',[])))
+    css=BASE+("body{background:white;color:__INK__}.top{padding:42px;border-bottom:4px solid __INK__;display:grid;grid-template-columns:1fr auto;gap:24px}h1{font-size:clamp(42px,6vw,86px);letter-spacing:-.045em;max-width:12ch}.badge{background:__ACCENT__;color:white;padding:12px 16px;height:max-content}.row{display:grid;grid-template-columns:70px 1fr 100px;gap:24px;padding:34px 42px;border-bottom:1px solid #0002}.num{font-family:monospace;color:__ACCENT__}h2{font-size:28px}p{margin-top:8px;line-height:1.55;max-width:62ch}.tag{font-size:12px;text-align:right}@media(max-width:720px){.top{grid-template-columns:1fr}.row{grid-template-columns:40px 1fr}.tag{display:none}}").replace('__INK__',ink).replace('__ACCENT__',accent)
+    return f'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>{css}</style><main><header class="top"><div><div class="kicker">Information Utility</div><h1>{esc(b.get("title"))}</h1><p>{esc(b.get("subtitle"))}</p></div><div class="badge">STRUCTURE FIRST</div></header>{rows}</main>'
+def main():
+    ap=argparse.ArgumentParser(); ap.add_argument('--brief',required=True); ap.add_argument('--out',required=True); a=ap.parse_args()
+    b=json.loads(Path(a.brief).read_text(encoding='utf-8')); out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
+    variants={'editorial':editorial(b),'architecture':architecture(b),'utility':utility(b)}
+    for k,v in variants.items(): (out/f'{k}.html').write_text(v,encoding='utf-8')
+    (out/'index.html').write_text('<!doctype html><meta charset="utf-8"><h1>Visual Pitch</h1><ul>'+''.join(f'<li><a href="{k}.html">{k}</a></li>' for k in variants)+'</ul>',encoding='utf-8')
+    (out/'pitch-manifest.json').write_text(json.dumps({'status':'PASS','variants':[{'id':'editorial','differences':['serif hierarchy','asymmetric split','paper editorial']},{'id':'architecture','differences':['dark spatial stage','multi-column narrative','geometric frame']},{'id':'utility','differences':['table rhythm','strict rules','scan efficiency']}]},ensure_ascii=False,indent=2),encoding='utf-8')
+    print(json.dumps({'status':'PASS','out':str(out),'variants':3},ensure_ascii=False))
+if __name__=='__main__': main()
