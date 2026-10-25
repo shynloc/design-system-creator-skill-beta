@@ -408,6 +408,27 @@ Portable Export 默认保留：
 
 ---
 
+## License & Rights
+
+**Copyright © 2026 shynloc. All rights reserved.**
+
+这个仓库允许你正常查看、下载、安装、运行和测试 Design System Creator，也允许你用它创建自己的 Design System 与各种文档/网页产物。
+
+但未经书面许可，不允许：
+
+- 二次打包、镜像、转载或重新发布本仓库；
+- 修改后作为另一个 Skill 分发；
+- 上架售卖、转授权或把 Skill 本身商业化；
+- 将其核心实现或大段方法论整合进竞争产品、SaaS、付费服务或培训包；
+- 删除版权、作者、来源或权利声明。
+
+完整条款见 [`LICENSE`](LICENSE)。
+
+> 可以用它创造你的东西；不能把它本身变成“你的东西”。
+
+
+---
+
 <p align="center">
   <strong>Teach AI your taste once. Let every artifact speak your visual language.</strong>
 </p>
